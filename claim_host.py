@@ -57,14 +57,10 @@ def copy(keycode):
 
 def paste(keycode):
     pyautogui.write(keycode)
-    # pyautogui.hotkey('ctrl', 'c', interval= 0.15)
-    # pyautogui.hotkey('ctrl', 'v', interval= 0.15)
     pyautogui.press('enter')
 
 def find_host():
     pass
-
-# print('The current pointer position is {0}'.format(mouse.position))
 
 def test_code(code):
     counter = 0
