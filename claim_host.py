@@ -1,14 +1,14 @@
 import itertools
-import pynput
-from pynput.mouse import Button, Controller as MouseController
-from pynput.keyboard import Key, Controller as KeyboardController
+import pyautogui
 import pyperclip
 import logging
 import time
+from pynput.mouse import Button, Controller
 
-mouse = MouseController()
-keyboard = KeyboardController()
-start_stop_key = KeyCode(char='s')
+
+
+mouse = Controller()
+
 
 master_key = []
 
@@ -20,41 +20,64 @@ for i in comb:
 
 
 nex = iter(master_key)
+
+
+locate_claim = pyautogui.locateOnScreen('screen_finds/claimhostalt.png', confidence=.9)
+print(locate_claim)
+claim_point = pyautogui.center(locate_claim)
+print(claim_point)
+pyautogui.click(claim_point.x*.5, claim_point.y*.5)
+
+
+def find_input():
+    try:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/inputbox.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+    except:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/grayinput.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+
+find_input()
+
+def click_claim():
+    try:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+    except:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+
 # #
 def turn_key(i):
         return next(i)
 
 def copy(keycode):
     pyperclip.copy(keycode)
-    time.sleep(.50)
-    mouse.click(Button.left, 2)
-    mouse.move(0, 50)
-    mouse.click(Button.left, 2)
+    print("Trying {}".format(keycode))
 
-def paste():
-    keyboard.press(Key.cmd)
-    time.sleep(.50)
-    keyboard.press('v')
-    time.sleep(.50)
-    keyboard.release('v')
-    keyboard.release(Key.cmd)
+def paste(keycode):
+    pyautogui.write(keycode)
+    # pyautogui.hotkey('ctrl', 'c', interval= 0.15)
+    # pyautogui.hotkey('ctrl', 'v', interval= 0.15)
+    pyautogui.press('enter')
 
-
-
-
+def find_host():
+    pass
 
 # print('The current pointer position is {0}'.format(mouse.position))
 
-
 def test_code(code):
     counter = 0
-    mouse.position = (540.77734375, 84.69140625)
     key = turn_key(code)
     copy(key)
-    paste()
+    paste(key)
+    click_claim()
+    pyautogui.move(-100, 0)
+    time.sleep(.5)
+    mouse.click(Button.left, 2)
+    pyautogui.press('backspace')
+    #find_input()
     for i in range(25):
         test_code(nex)
         counter +=1
-
-
 test_code(nex)
