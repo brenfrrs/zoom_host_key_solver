@@ -3,18 +3,31 @@ import pyautogui
 import pyperclip
 import logging
 import time
+import timeit
+import random
 from pynput.mouse import Button, Controller
 
+start = time.time()
 
+pyautogui.FAILSAFE = True
 
 mouse = Controller()
 
 
 master_key = []
 
-comb = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
+comb6 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
+#comb7 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=7))
+#comb8 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=8))
+#comb9 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=9))
+#comb10 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=10))
 
-for i in comb:
+final_list = comb6 #+ comb7 + comb8 + comb9 + comb10
+random.shuffle(final_list)
+
+print(final_list[:10])
+
+for i in final_list:
     res = ''.join(str(x) for x in i)
     master_key.append(res)
 
@@ -28,6 +41,7 @@ claim_point = pyautogui.center(locate_claim)
 print(claim_point)
 pyautogui.click(claim_point.x*.5, claim_point.y*.5)
 
+time.sleep(.2)
 
 def find_input():
     try:
@@ -69,11 +83,12 @@ def test_code(code):
     paste(key)
     click_claim()
     pyautogui.move(-100, 0)
-    time.sleep(.5)
     mouse.click(Button.left, 2)
     pyautogui.press('backspace')
     #find_input()
+    end = time.time()
+    print(f"Program Runtime is {end - start}")
     for i in range(25):
         test_code(nex)
-        counter +=1
+
 test_code(nex)
