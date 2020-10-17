@@ -14,7 +14,10 @@ pyautogui.FAILSAFE = True
 mouse = Controller()
 
 
-master_key = []
+master_key = [] #master list of combinations
+
+
+# each comb is a list of all n digit numbers based on 'repeat' value.
 
 comb6 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
 #comb7 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=7))
@@ -28,11 +31,15 @@ random.shuffle(final_list)
 print(final_list[:10])
 
 for i in final_list:
+    #each number is a list of digits, this function joins
+    #each number list to create a list of numbers, then
+    #appends the number into the master_key list.
     res = ''.join(str(x) for x in i)
     master_key.append(res)
 
 
-nex = iter(master_key)
+nex = iter(master_key) # turn master list into an iterator so we can grab
+                       # one number at a time.
 
 
 locate_claim = pyautogui.locateOnScreen('screen_finds/claimhostalt.png', confidence=.9)
@@ -44,6 +51,9 @@ pyautogui.click(claim_point.x*.5, claim_point.y*.5)
 time.sleep(.2)
 
 def find_input():
+    '''
+    Find the input box from the claim host popup.
+    '''
     try:
         input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/inputbox.png', confidence=.9)
         pyautogui.click(input_box_x*.5, input_box_y*.5)
@@ -54,6 +64,10 @@ def find_input():
 find_input()
 
 def click_claim():
+    '''
+    Click the blue claim host button that appears after
+    numbers are entered.
+    '''
     try:
         input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9)
         pyautogui.click(input_box_x*.5, input_box_y*.5)
@@ -63,6 +77,9 @@ def click_claim():
 
 # #
 def turn_key(i):
+    '''
+    Grab the next number from the master_list
+    '''
         return next(i)
 
 def copy(keycode):
@@ -73,11 +90,7 @@ def paste(keycode):
     pyautogui.write(keycode)
     pyautogui.press('enter')
 
-def find_host():
-    pass
-
 def test_code(code):
-    counter = 0
     key = turn_key(code)
     copy(key)
     paste(key)
@@ -85,9 +98,7 @@ def test_code(code):
     pyautogui.move(-100, 0)
     mouse.click(Button.left, 2)
     pyautogui.press('backspace')
-    #find_input()
     end = time.time()
-    print(f"Program Runtime is {end - start}")
     for i in range(25):
         test_code(nex)
 
