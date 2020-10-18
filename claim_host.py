@@ -8,8 +8,6 @@ import random
 import schedule
 from pynput.mouse import Button, Controller
 
-start = time.time()
-
 pyautogui.FAILSAFE = True
 
 mouse = Controller()
@@ -17,24 +15,24 @@ mouse = Controller()
 print('Creating key list...')
 master_key = [] #master list of combinations
 
-def wait_message():
-    print('working........')
-
-schedule.every(5).seconds.do(wait_message)
-
-while len(master_key) == 0:
-    schedule.run_pending()
+# def wait_message():
+#     print('working..')
+#
+# schedule.every(5).seconds.do(wait_message)
+#
+# while len(master_key) == 0:
+#     schedule.run_pending()
 
 # each comb is a list of all n digit numbers based on 'repeat' value.
 
-comb6 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
+#comb3 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=3))
+#comb6 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
 #comb7 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=7))
-#comb8 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=8))
+comb8 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=8))
 #comb9 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=9))
 #comb10 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=10))
 
-final_list = comb6 #+ comb7 + comb8 + comb9 + comb10
-random.shuffle(final_list)
+final_list = comb8 #+ comb7 + comb8 + comb9 + comb10
 
 print('List complete!')
 
@@ -45,7 +43,7 @@ for i in final_list:
     res = ''.join(str(x) for x in i)
     master_key.append(res)
 
-
+print("The list contains {} items.".format(len(master_key))) # print the length of the list.
 nex = iter(master_key) # turn master list into an iterator so we can grab
                        # one number at a time.
 
@@ -95,4 +93,4 @@ def test_code(code):
     end = time.time()
     test_code(nex)
 
-test_code(nex)
+#test_code(nex)
