@@ -100,6 +100,7 @@ def turn_key(i):
 
 def copy(keycode):
     pyperclip.copy(keycode)
+    print("Trying {}".format(keycode))
 
 def paste(keycode):
     pyautogui.write(keycode)
