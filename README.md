@@ -13,4 +13,5 @@ In order for the program to work properly, you need to be in a Zoom room with 'c
 
 Depending on your screen resolution, you may need to remove '*.5' in the coordinates located on lines: 66, 73, 76, 89, and 92.
 
-This script is for educational purposes and was created as a way to learn the fundamentals of pyautogui.
+This script is for educational purposes and was created as a way to learn the fundamentals of pyautogui and
+permutation.
