@@ -15,3 +15,7 @@ Depending on your screen resolution, you may need to remove '*.5' in the coordin
 
 This script is for educational purposes and was created as a way to learn the fundamentals of pyautogui and
 permutation.
+
+
+Do you want to know the difference between permutations a combinations? Check this ---->
+(out)[https://www.thoughtco.com/combinations-vs-permutations-3126548]
