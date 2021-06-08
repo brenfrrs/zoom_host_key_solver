@@ -17,5 +17,5 @@ This script is for educational purposes and was created as a way to learn the fu
 permutation.
 
 
-Do you want to know the difference between permutations a combinations? Check this ---->
-[out](https://www.thoughtco.com/combinations-vs-permutations-3126548)
+Do you want to know the difference between permutations a combinations? Check this
+[out](https://www.thoughtco.com/combinations-vs-permutations-3126548).
